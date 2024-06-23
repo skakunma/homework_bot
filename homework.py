@@ -5,7 +5,6 @@ import logging
 import sys
 from dotenv import load_dotenv
 from telebot import TeleBot
-from http import HTTPStatus
 
 
 # Загрузка переменных окружения
@@ -45,7 +44,9 @@ def check_tokens():
     }
     missing_tokens = [name for name, value in tokens.items() if value is None]
     if missing_tokens:
-        logging.critical(f'Отсутствуют необходимые переменные окружения: {", ".join(missing_tokens)}')
+        logging.critical(
+            'Отсутствуют необходимые переменные окружения:',
+            f'{", ".join(missing_tokens)}')
         return False
     return True
 
@@ -70,8 +71,8 @@ def get_api_answer(timestamp):
         if response.status_code == 200:
             return response.json()
         else:
-            logging.error(f'API вернул код {response.status_code}')
-            raise BadRequestException(f'API вернул статус {response.status_code}')
+            raise logging.error(
+                f'API вернул код {response.status_code}')
     except requests.exceptions.RequestException as e:
         return logging.error(f'Ошибка при запросе к API: {e}')
     except Exception as e:
