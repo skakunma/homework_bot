@@ -4,7 +4,7 @@ import time
 import logging
 import sys
 from dotenv import load_dotenv
-import telebot
+from telebot import TeleBot
 from http import HTTPStatus
 
 
@@ -55,8 +55,10 @@ def send_message(bot, message):
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
         logging.debug(f'Бот отправил сообщение: "{message}"')
+        return None
     except Exception as e:
         logging.error(f'Ошибка при отправке сообщения: {e}')
+        return None
 
 
 def get_api_answer(timestamp):
@@ -104,7 +106,7 @@ def main():
     if not check_tokens():
         sys.exit(1)
 
-    bot = telebot.TeleBot(TELEGRAM_TOKEN)
+    bot = TeleBot(TELEGRAM_TOKEN)
     timestamp = int(time.time())
 
     while True:
