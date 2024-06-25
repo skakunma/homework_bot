@@ -42,13 +42,12 @@ def check_tokens():
         'TELEGRAM_TOKEN': TELEGRAM_TOKEN,
         'TELEGRAM_CHAT_ID': TELEGRAM_CHAT_ID
     }
+    if all(tokens.values()):
+        return True
     missing_tokens = [name for name, value in tokens.items() if value is None]
-    if missing_tokens:
-        logging.critical(
-            'Отсутствуют необходимые переменные окружения:',
-            f'{", ".join(missing_tokens)}')
-        return False
-    return True
+    raise logging.critical(
+        'Отсутствуют необходимые переменные окружения: '
+        f'{", ".join(missing_tokens)}')
 
 
 def send_message(bot, message):
@@ -56,11 +55,9 @@ def send_message(bot, message):
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
         logging.debug(f'Бот отправил сообщение: "{message}"')
-        return None
     except Exception as e:
         logging.error(f'Ошибка при отправке сообщения: {e}')
-        return None
-
+        
 
 def get_api_answer(timestamp):
     """Делает запрос к API и возвращает ответ в виде JSON."""
@@ -112,7 +109,8 @@ def main():
 
     while True:
         try:
-            response = get_api_answer(0)
+            #я тут тестил просто как работает и забыл изменить
+            response = get_api_answer(timestamp)
             homeworks = check_response(response)
             if homeworks:
                 for homework in homeworks:
