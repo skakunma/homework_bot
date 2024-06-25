@@ -57,7 +57,7 @@ def send_message(bot, message):
         logging.debug(f'Бот отправил сообщение: "{message}"')
     except Exception as e:
         logging.error(f'Ошибка при отправке сообщения: {e}')
-        
+
 
 def get_api_answer(timestamp):
     """Делает запрос к API и возвращает ответ в виде JSON."""
@@ -109,7 +109,7 @@ def main():
 
     while True:
         try:
-            #я тут тестил просто как работает и забыл изменить
+            # я тут тестил просто как работает и забыл изменить
             response = get_api_answer(timestamp)
             homeworks = check_response(response)
             if homeworks:
